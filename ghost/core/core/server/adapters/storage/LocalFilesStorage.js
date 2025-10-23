@@ -19,6 +19,24 @@ class LocalFilesStorage extends LocalStorageBase {
             errorMessages: messages
         });
     }
+
+    async save(file, targetDir) {
+        const result = await super.save(file, targetDir);
+        if (!config.get('urls:files')) {
+            return result;
+        }
+
+        return `${config.get('urls:files')}${result}`;
+    }
+
+    async saveRaw(buffer, targetPath) {
+        const result = await super.saveRaw(buffer, targetPath);
+        if (!config.get('urls:files')) {
+            return result;
+        }
+
+        return `${config.get('urls:files')}${result}`;
+    }
 }
 
 module.exports = LocalFilesStorage;
